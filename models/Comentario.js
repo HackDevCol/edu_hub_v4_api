@@ -8,3 +8,13 @@ const comentarioSchema = new mongoose.Schema(
       trim: true,
     },
     autor: {
+      type: mongoose.Schema.Types.ObjectId,
+      ref: "Usuario",
+      required: true,
+    },
+    noticia: {
+      type: mongoose.Schema.Types.ObjectId,
+      ref: "Noticia",
+      required: true,
+    },
+    activo: {
