@@ -1,0 +1,10 @@
+const mongoose = require("mongoose");
+
+const comentarioSchema = new mongoose.Schema(
+  {
+    contenido: {
+      type: String,
+      required: [true, "El contenido del comentario es obligatorio"],
+      trim: true,
+    },
+    autor: {
