@@ -14,3 +14,19 @@ const usuarioSchema = new mongoose.Schema(
       unique: true,
       lowercase: true,
       trim: true,
+    },
+    clave: {
+      type: String,
+      required: [true, "La clave es obligatoria"],
+      minlength: 6,
+    },
+    rol: {
+      type: String,
+      enum: ["estudiante", "docente", "admin"],
+      default: "estudiante",
+    },
+    activo: {
+      type: Boolean,
+      default: true,
+    },
+  },
