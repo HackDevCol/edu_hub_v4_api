@@ -18,3 +18,11 @@ const comentarioSchema = new mongoose.Schema(
       required: true,
     },
     activo: {
+      type: Boolean,
+      default: true,
+    },
+  },
+  { timestamps: true }
+);
+
+module.exports = mongoose.model("Comentario", comentarioSchema);
