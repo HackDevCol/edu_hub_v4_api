@@ -32,3 +32,18 @@ const noticiaSchema = new mongoose.Schema(
     },
     publicada: {
       type: Boolean,
+      default: false,
+    },
+    fechaPublicacion: {
+      type: Date,
+      default: null,
+    },
+    vistas: {
+      type: Number,
+      default: 0,
+    },
+  },
+  { timestamps: true }
+);
+
+module.exports = mongoose.model("Noticia", noticiaSchema);
