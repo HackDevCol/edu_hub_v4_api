@@ -30,3 +30,18 @@ const usuarioSchema = new mongoose.Schema(
       default: true,
     },
   },
+  { timestamps: true }
+);
+
+// ── Método para cifrar la contraseña con bcrypt ───────────────
+usuarioSchema.methods.encryptClave = async function (clave) {
+  const salt = await bcrypt.genSalt(10);
+  return bcrypt.hash(clave, salt);
+};
+
+// ── Método para comparar contraseñas ─────────────────────────
+usuarioSchema.methods.validarClave = async function (claveIngresada) {
+  return bcrypt.compare(claveIngresada, this.clave);
+};
+
+module.exports = mongoose.model("Usuario", usuarioSchema);
