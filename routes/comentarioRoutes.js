@@ -17,3 +17,22 @@ router.get("/noticia/:noticiaId", async (req, res) => {
     res.status(500).json({ error: err.message });
   }
 });
+
+// ── GET /api/comentarios  →  Todos los comentarios (admin) ────
+router.get("/", verifyAdmin, async (req, res) => {
+  try {
+    const comentarios = await Comentario.find()
+      .populate("autor",   "nombre correo")
+      .populate("noticia", "titulo")
+      .sort({ createdAt: -1 });
+    res.json(comentarios);
+  } catch (err) {
+    res.status(500).json({ error: err.message });
+  }
+});
+
+// ── GET /api/comentarios/:id  →  Un comentario por ID ─────────
+router.get("/:id", verifyToken, async (req, res) => {
+  try {
+    const comentario = await Comentario.findById(req.params.id)
+      .populate("autor",   "nombre correo")
