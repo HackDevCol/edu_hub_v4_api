@@ -10,3 +10,15 @@ const categoriaSchema = new mongoose.Schema(
     },
     descripcion: {
       type: String,
+      trim: true,
+      default: "",
+    },
+    activa: {
+      type: Boolean,
+      default: true,
+    },
+  },
+  { timestamps: true }
+);
+
+module.exports = mongoose.model("Categoria", categoriaSchema);
