@@ -18,3 +18,23 @@ router.get("/", async (req, res) => {
       .populate("autor",    "nombre correo rol")
       .populate("categoria","nombre")
       .sort({ fechaPublicacion: -1 });
+
+    res.json(noticias);
+  } catch (err) {
+    res.status(500).json({ error: err.message });
+  }
+});
+
+// ── GET /api/noticias/todas  →  Todas las noticias (admin/docente)
+router.get("/todas", verifyAdmin, async (req, res) => {
+  try {
+    const noticias = await Noticia.find()
+      .populate("autor",    "nombre correo")
+      .populate("categoria","nombre")
+      .sort({ createdAt: -1 });
+    res.json(noticias);
+  } catch (err) {
+    res.status(500).json({ error: err.message });
+  }
+});
+
