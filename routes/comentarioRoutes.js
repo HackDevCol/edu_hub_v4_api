@@ -36,3 +36,22 @@ router.get("/:id", verifyToken, async (req, res) => {
   try {
     const comentario = await Comentario.findById(req.params.id)
       .populate("autor",   "nombre correo")
+      .populate("noticia", "titulo");
+    if (!comentario) return res.status(404).json({ error: "Comentario no encontrado." });
+    res.json(comentario);
+  } catch (err) {
+    res.status(500).json({ error: err.message });
+  }
+});
+
+// ── POST /api/comentarios  →  Crear un comentario ─────────────
+router.post("/", verifyToken, async (req, res) => {
+  try {
+    const comentario = new Comentario({
+      contenido: req.body.contenido,
+      noticia:   req.body.noticia,
+      autor:     req.usuario.id,   // del token JWT
+    });
+    const guardado = await comentario.save();
+    await guardado.populate("autor",   "nombre correo");
+    await guardado.populate("noticia", "titulo");
