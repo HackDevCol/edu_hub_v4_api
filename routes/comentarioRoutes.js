@@ -55,3 +55,22 @@ router.post("/", verifyToken, async (req, res) => {
     const guardado = await comentario.save();
     await guardado.populate("autor",   "nombre correo");
     await guardado.populate("noticia", "titulo");
+    res.status(201).json(guardado);
+  } catch (err) {
+    res.status(400).json({ error: err.message });
+  }
+});
+
+// ── PUT /api/comentarios/:id  →  Actualizar comentario ────────
+router.put("/:id", verifyToken, async (req, res) => {
+  try {
+    const actualizado = await Comentario.findByIdAndUpdate(
+      req.params.id,
+      { contenido: req.body.contenido },
+      { new: true, runValidators: true }
+    )
+      .populate("autor",   "nombre correo")
+      .populate("noticia", "titulo");
+
+    if (!actualizado) return res.status(404).json({ error: "Comentario no encontrado." });
+    res.json(actualizado);
