@@ -20,3 +20,25 @@ router.post("/signup", async (req, res) => {
     // Cifrar la clave con bcrypt antes de guardar
     usuario.clave = await usuario.encryptClave(clave);
     await usuario.save();
+
+    // Generar token JWT
+    const token = jwt.sign(
+      { id: usuario._id, rol: usuario.rol },
+      process.env.SECRET,
+      { expiresIn: "24h" }
+    );
+
+    res.status(201).json({
+      mensaje: "Usuario registrado exitosamente.",
+      auth: true,
+      token,
+      usuario: {
+        id:     usuario._id,
+        nombre: usuario.nombre,
+        correo: usuario.correo,
+        rol:    usuario.rol,
+      },
+    });
+  } catch (err) {
+    res.status(500).json({ error: err.message });
+  }
