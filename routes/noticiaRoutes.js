@@ -38,3 +38,23 @@ router.get("/todas", verifyAdmin, async (req, res) => {
   }
 });
 
+// ── GET /api/noticias/:id  →  Obtener una noticia por ID ──────
+router.get("/:id", async (req, res) => {
+  try {
+    const noticia = await Noticia.findById(req.params.id)
+      .populate("autor",    "nombre correo rol")
+      .populate("categoria","nombre descripcion");
+
+    if (!noticia) return res.status(404).json({ error: "Noticia no encontrada." });
+
+    // Incrementar contador de vistas
+    noticia.vistas += 1;
+    await noticia.save();
+
+    res.json(noticia);
+  } catch (err) {
+    res.status(500).json({ error: err.message });
+  }
+});
+
+// ── POST /api/noticias  →  Crear una noticia ──────────────────
