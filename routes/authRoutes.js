@@ -42,3 +42,25 @@ router.post("/signup", async (req, res) => {
   } catch (err) {
     res.status(500).json({ error: err.message });
   }
+});
+
+// ── POST /api/auth/login  →  Iniciar sesión ───────────────────
+router.post("/login", async (req, res) => {
+  try {
+    const { correo, clave } = req.body;
+
+    if (!correo || !clave) {
+      return res.status(400).json({ error: "Correo y clave son requeridos." });
+    }
+
+    // Buscar usuario por correo
+    const usuario = await Usuario.findOne({ correo });
+    if (!usuario) {
+      return res.status(400).json({ error: "Usuario no encontrado." });
+    }
+
+    // Verificar si la cuenta está activa
+    if (!usuario.activo) {
+      return res.status(403).json({ error: "Cuenta desactivada." });
+    }
+
