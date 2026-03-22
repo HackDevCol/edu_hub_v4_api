@@ -58,3 +58,23 @@ router.get("/:id", async (req, res) => {
 });
 
 // ── POST /api/noticias  →  Crear una noticia ──────────────────
+router.post("/", verifyAdmin, async (req, res) => {
+  try {
+    const noticia = new Noticia({
+      ...req.body,
+      autor: req.usuario.id,   // tomado del token JWT
+    });
+
+    if (noticia.publicada) {
+      noticia.fechaPublicacion = new Date();
+    }
+
+    const guardada = await noticia.save();
+    await guardada.populate("autor",    "nombre correo");
+    await guardada.populate("categoria","nombre");
+
+    res.status(201).json(guardada);
+  } catch (err) {
+    res.status(400).json({ error: err.message });
+  }
+});
