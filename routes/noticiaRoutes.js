@@ -78,3 +78,23 @@ router.post("/", verifyAdmin, async (req, res) => {
     res.status(400).json({ error: err.message });
   }
 });
+
+// ── PUT /api/noticias/:id  →  Actualizar una noticia ──────────
+router.put("/:id", verifyAdmin, async (req, res) => {
+  try {
+    // Si se publica por primera vez, registrar la fecha
+    if (req.body.publicada === true) {
+      const actual = await Noticia.findById(req.params.id);
+      if (actual && !actual.publicada) {
+        req.body.fechaPublicacion = new Date();
+      }
+    }
+
+    const actualizada = await Noticia.findByIdAndUpdate(
+      req.params.id,
+      req.body,
+      { new: true, runValidators: true }
+    )
+      .populate("autor",    "nombre correo")
+      .populate("categoria","nombre");
+
