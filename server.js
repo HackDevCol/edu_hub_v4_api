@@ -12,3 +12,10 @@ app.use(express.json());
 // ── Conexión a MongoDB ────────────────────────────────────────
 mongoose
   .connect(process.env.MONGO_URI)
+  .then(() => console.log("✅ MongoDB conectado"))
+  .catch((err) => console.error("❌ Error de conexión:", err));
+
+// ── Rutas ─────────────────────────────────────────────────────
+app.use("/api/auth",       require("./routes/authRoutes"));
+app.use("/api/usuarios",   require("./routes/usuarioRoutes"));
+app.use("/api/noticias",   require("./routes/noticiaRoutes"));
