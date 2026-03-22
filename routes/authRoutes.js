@@ -64,3 +64,25 @@ router.post("/login", async (req, res) => {
       return res.status(403).json({ error: "Cuenta desactivada." });
     }
 
+    // Comparar clave ingresada con el hash almacenado (bcrypt)
+    const claveValida = await usuario.validarClave(clave);
+    if (!claveValida) {
+      return res.status(400).json({ error: "Clave incorrecta." });
+    }
+
+    // Generar token JWT
+    const token = jwt.sign(
+      { id: usuario._id, rol: usuario.rol },
+      process.env.SECRET,
+      { expiresIn: "24h" }
+    );
+
+    res.json({
+      mensaje: `Bienvenido(a), ${usuario.nombre}!`,
+      auth: true,
+      token,
+      usuario: {
+        id:     usuario._id,
+        nombre: usuario.nombre,
+        correo: usuario.correo,
+        rol:    usuario.rol,
