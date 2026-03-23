@@ -19,3 +19,10 @@ mongoose
 app.use("/api/auth",       require("./routes/authRoutes"));
 app.use("/api/usuarios",   require("./routes/usuarioRoutes"));
 app.use("/api/noticias",   require("./routes/noticiaRoutes"));
+app.use("/api/categorias", require("./routes/categoriaRoutes"));
+app.use("/api/comentarios",require("./routes/comentarioRoutes"));
+
+// ── Ruta base ─────────────────────────────────────────────────
+app.get("/", (req, res) => {
+  res.json({
+    mensaje: "📰 API de Noticias Universitarias - Funcionando 🚀",
