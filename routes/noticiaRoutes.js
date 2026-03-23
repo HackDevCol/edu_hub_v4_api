@@ -98,3 +98,22 @@ router.put("/:id", verifyAdmin, async (req, res) => {
       .populate("autor",    "nombre correo")
       .populate("categoria","nombre");
 
+    if (!actualizada) return res.status(404).json({ error: "Noticia no encontrada." });
+    res.json(actualizada);
+  } catch (err) {
+    res.status(400).json({ error: err.message });
+  }
+});
+
+// ── DELETE /api/noticias/:id  →  Eliminar una noticia ─────────
+router.delete("/:id", verifyAdmin, async (req, res) => {
+  try {
+    const eliminada = await Noticia.findByIdAndDelete(req.params.id);
+    if (!eliminada) return res.status(404).json({ error: "Noticia no encontrada." });
+    res.json({ mensaje: "Noticia eliminada correctamente." });
+  } catch (err) {
+    res.status(500).json({ error: err.message });
+  }
+});
+
+module.exports = router;
