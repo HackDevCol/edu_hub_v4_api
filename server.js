@@ -26,3 +26,10 @@ app.use("/api/comentarios",require("./routes/comentarioRoutes"));
 app.get("/", (req, res) => {
   res.json({
     mensaje: "📰 API de Noticias Universitarias - Funcionando 🚀",
+    version: "1.0.0",
+    endpoints: {
+      auth:        "/api/auth",
+      usuarios:    "/api/usuarios",
+      noticias:    "/api/noticias",
+      categorias:  "/api/categorias",
+      comentarios: "/api/comentarios",
