@@ -33,3 +33,10 @@ app.get("/", (req, res) => {
       noticias:    "/api/noticias",
       categorias:  "/api/categorias",
       comentarios: "/api/comentarios",
+    },
+  });
+});
+
+// ── Inicio del servidor ───────────────────────────────────────
+const PORT = process.env.PORT || 3000;
+app.listen(PORT, () => {
