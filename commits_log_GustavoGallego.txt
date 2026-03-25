@@ -1,0 +1,15 @@
+Commit 1: Organize imports
+Commit 2: Refactor controller responses
+Commit 3: Fix typo in variable name
+Commit 4: Add inline documentation
+Commit 5: Minor syntax fixes
+Commit 6: Adjust JWT token expiration
+Commit 7: Improve module exports
+Commit 8: Improve middleware logic
+Commit 9: Improve middleware logic
+Commit 10: Update project dependencies
+Commit 11: Add error handling
+Commit 12: General code cleanup
+Commit 13: Refactor variable names for clarity
+Commit 14: Refactor variable names for clarity
+Commit 15: Improve middleware logic
