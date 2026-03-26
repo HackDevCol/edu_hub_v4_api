@@ -28,3 +28,16 @@ const verifyToken = (req, res, next) => {
  * comprueba que el rol del usuario sea "admin" o "docente".
  * Usar en rutas que solo pueden gestionar publicadores.
  */
+const verifyAdmin = (req, res, next) => {
+  verifyToken(req, res, () => {
+    if (req.usuario.rol === "admin" || req.usuario.rol === "docente") {
+      next();
+    } else {
+      return res.status(403).json({
+        error: "No tienes permisos para realizar esta acción.",
+      });
+    }
+  });
+};
+
+module.exports = { verifyToken, verifyAdmin };
