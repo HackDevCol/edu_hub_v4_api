@@ -14,3 +14,19 @@ router.get("/", async (req, res) => {
 });
 
 // ── GET /api/categorias/:id  →  Obtener una categoría ─────────
+router.get("/:id", async (req, res) => {
+  try {
+    const categoria = await Categoria.findById(req.params.id);
+    if (!categoria) return res.status(404).json({ error: "Categoría no encontrada." });
+    res.json(categoria);
+  } catch (err) {
+    res.status(500).json({ error: err.message });
+  }
+});
+
+// ── POST /api/categorias  →  Crear una categoría (admin/docente)
+router.post("/", verifyAdmin, async (req, res) => {
+  try {
+    const categoria = new Categoria(req.body);
+    const guardada  = await categoria.save();
+    res.status(201).json(guardada);
