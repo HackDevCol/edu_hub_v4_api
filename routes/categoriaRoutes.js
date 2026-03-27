@@ -30,3 +30,19 @@ router.post("/", verifyAdmin, async (req, res) => {
     const categoria = new Categoria(req.body);
     const guardada  = await categoria.save();
     res.status(201).json(guardada);
+  } catch (err) {
+    res.status(400).json({ error: err.message });
+  }
+});
+
+// ── PUT /api/categorias/:id  →  Actualizar categoría ──────────
+router.put("/:id", verifyAdmin, async (req, res) => {
+  try {
+    const actualizada = await Categoria.findByIdAndUpdate(
+      req.params.id,
+      req.body,
+      { new: true, runValidators: true }
+    );
+    if (!actualizada) return res.status(404).json({ error: "Categoría no encontrada." });
+    res.json(actualizada);
+  } catch (err) {
