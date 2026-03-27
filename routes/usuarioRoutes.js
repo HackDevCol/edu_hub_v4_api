@@ -19,3 +19,24 @@ router.get("/:id", verifyToken, async (req, res) => {
     const usuario = await Usuario.findById(req.params.id).select("-clave");
     if (!usuario) return res.status(404).json({ error: "Usuario no encontrado." });
     res.json(usuario);
+  } catch (err) {
+    res.status(500).json({ error: err.message });
+  }
+});
+
+// ── POST /api/usuarios  →  Crear usuario (admin) ──────────────
+router.post("/", verifyAdmin, async (req, res) => {
+  try {
+    const { nombre, correo, clave, rol } = req.body;
+
+    const existe = await Usuario.findOne({ correo });
+    if (existe) return res.status(400).json({ error: "El correo ya existe." });
+
+    const usuario = new Usuario({ nombre, correo, clave, rol });
+    usuario.clave = await usuario.encryptClave(clave);
+    const guardado = await usuario.save();
+
+    const { clave: _, ...datos } = guardado.toObject();
+    res.status(201).json(datos);
+  } catch (err) {
+    res.status(500).json({ error: err.message });
