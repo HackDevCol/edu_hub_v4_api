@@ -61,3 +61,21 @@ router.put("/:id", verifyToken, async (req, res) => {
     ).select("-clave");
 
     if (!actualizado) return res.status(404).json({ error: "Usuario no encontrado." });
+    res.json(actualizado);
+  } catch (err) {
+    res.status(500).json({ error: err.message });
+  }
+});
+
+// ── DELETE /api/usuarios/:id  →  Eliminar usuario (admin) ─────
+router.delete("/:id", verifyAdmin, async (req, res) => {
+  try {
+    const eliminado = await Usuario.findByIdAndDelete(req.params.id);
+    if (!eliminado) return res.status(404).json({ error: "Usuario no encontrado." });
+    res.json({ mensaje: "Usuario eliminado correctamente." });
+  } catch (err) {
+    res.status(500).json({ error: err.message });
+  }
+});
+
+module.exports = router;
