@@ -40,3 +40,24 @@ router.post("/", verifyAdmin, async (req, res) => {
     res.status(201).json(datos);
   } catch (err) {
     res.status(500).json({ error: err.message });
+  }
+});
+
+// ── PUT /api/usuarios/:id  →  Actualizar usuario ──────────────
+router.put("/:id", verifyToken, async (req, res) => {
+  try {
+    const { clave, ...resto } = req.body;
+
+    // Si viene nueva clave, cifrarla
+    if (clave) {
+      const usuarioTemp = new Usuario();
+      resto.clave = await usuarioTemp.encryptClave(clave);
+    }
+
+    const actualizado = await Usuario.findByIdAndUpdate(
+      req.params.id,
+      resto,
+      { new: true, runValidators: true }
+    ).select("-clave");
+
+    if (!actualizado) return res.status(404).json({ error: "Usuario no encontrado." });
