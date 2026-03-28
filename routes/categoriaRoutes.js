@@ -46,3 +46,19 @@ router.put("/:id", verifyAdmin, async (req, res) => {
     if (!actualizada) return res.status(404).json({ error: "Categoría no encontrada." });
     res.json(actualizada);
   } catch (err) {
+    res.status(400).json({ error: err.message });
+  }
+});
+
+// ── DELETE /api/categorias/:id  →  Eliminar categoría ─────────
+router.delete("/:id", verifyAdmin, async (req, res) => {
+  try {
+    const eliminada = await Categoria.findByIdAndDelete(req.params.id);
+    if (!eliminada) return res.status(404).json({ error: "Categoría no encontrada." });
+    res.json({ mensaje: "Categoría eliminada correctamente." });
+  } catch (err) {
+    res.status(500).json({ error: err.message });
+  }
+});
+
+module.exports = router;
