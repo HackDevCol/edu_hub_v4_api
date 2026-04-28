@@ -5,19 +5,19 @@ const usuarioSchema = new mongoose.Schema(
   {
     nombre: {
       type: String,
-      required: [true, "Este campo no puede estar vacio"],
+      required: [true, "Este campo es obligatorio"],
       trim: true,
     },
     correo: {
       type: String,
-      required: [true, "Este campo no puede estar vacio"],
+      required: [true, "Este campo es obligatorio"],
       unique: true,
       lowercase: true,
       trim: true,
     },
     clave: {
       type: String,
-      required: [true, "Este campo no puede estar vacio"],
+      required: [true, "Este campo es obligatorio"],
       minlength: 6,
     },
     rol: {
